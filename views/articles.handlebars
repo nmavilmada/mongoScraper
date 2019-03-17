@@ -1,0 +1,96 @@
+<script>
+    function submitComment(id) {
+        let newData = {
+            comment: $(`#comment-${id}`).val().trim()
+        };
+        $.post(`/articles/${id}/comments`, newData, function (data) {
+            var lastComment = data.comments[data.comments.length - 1];
+            $(`#comment-group-${id}`).append(`
+                <div id="article-comment-${lastComment._id}" style="display: flex; justify-content:space-between; align-items: center;">
+                    <a class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">${lastComment.body}</h5>
+                            <small>${lastComment.date}</small>
+                        </div>
+                    </a>
+
+                    <div style="padding: 5px;">
+                        <i class="fas fa-trash-alt" onclick="javascript:removeComment('${id}', '${lastComment._id}')"></i>
+                    </div>
+                    
+                </div>
+            `);
+
+        });
+        return false;
+    }
+
+    function removeComment(articleId, commentId) {
+        console.log(articleId);
+        console.log(commentId);
+        $.get(`/articles/${articleId}/comments/${commentId}/delete`, function (data) {
+            console.log(data);
+            $(`#article-comment-${commentId}`).remove();
+        });
+        return false;
+    }
+
+</script>
+
+{{#each articles}}
+<div class="container-fluid article-container">
+    <div class="card">
+        <div class="card-header">
+            <h3>
+                <a class="article-link" target="_blank" rel="noopener noreferrer" href="{{url}}">{{headline}}</a>
+            </h3>
+        </div>
+        <div class="card-body">{{summary}}</div>
+
+        <div style="padding: 20px;">
+
+            <div>Comments <i class="fas fa-comment-medical"></i>
+
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <textarea id="comment-{{_id}}" class="form-control" aria-label="With textarea"
+                            placeholder="Input Comments"></textarea>
+                    </div>
+                    <div class="input-group-append">
+                        <button id="submit" type="button" class="btn btn-primary"
+                            onclick="javascript:submitComment('{{_id}}', {{comments.length}})">Submit</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="list-group" id="comment-group-{{_id}}">
+
+                {{#each comments}}
+                <div id="article-comment-{{_id}}" style="display: flex; justify-content:space-between; align-items: center;">
+                    <a class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{body}}</h5>
+                            <small>{{date}}</small>
+                        </div>
+                    </a>
+
+                    <div style="padding: 5px;">
+                        <i class="fas fa-trash-alt" onclick="javascript:removeComment('{{../_id}}', '{{_id}}')"></i>
+                    </div>
+                    
+                </div>
+
+                
+                {{/each}}
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+<div style="margin-bottom: 10px;">
+    &nbsp;
+</div>
+{{/each}}

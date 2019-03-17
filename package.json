@@ -1,0 +1,33 @@
+{
+  "name": "mongoscraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "watch": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmavilmada/mongoScraper.git"
+  },
+  "keywords": [
+    "scraper"
+  ],
+  "author": "Nali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nmavilmada/mongoScraper/issues"
+  },
+  "homepage": "https://github.com/nmavilmada/mongoScraper#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.2",
+    "handlebars": "^4.1.1",
+    "mongoose": "^5.4.19",
+    "nodemon": "^1.18.10"
+  }
+}
