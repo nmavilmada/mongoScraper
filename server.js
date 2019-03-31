@@ -36,6 +36,7 @@ app.set("view engine", "handlebars");
 // mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/news_scrape";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+mongoose.set('useCreateIndex', true);
 
 var NEWS_SITE = process.env.NEWS_SITE || 'https://slashdot.org/';
 
@@ -54,6 +55,17 @@ function createArticle(data) {
 }
 
 // Routes
+// add root
+app.get("/", function (req, res) {
+    // Grab every document in the Articles collection
+
+    Article.find({}, function (err, data) {
+        res.render('articles', {
+            articles: data
+        });
+    });
+});
+
 
 // A GET route for scraping the echoJS website
 app.get("/scrape", function (req, res) {
